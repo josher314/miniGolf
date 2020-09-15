@@ -9,21 +9,24 @@ const height = canvas.height = window.innerHeight;
 
 // Putter
   class Putter {
-    constructor (x, y, vel, theta) {
+    constructor (x, y, vel, angle) {
         this.x = x;
         this.y = y;
-        this.velX= vel*Math.cos(theta);
-        this.velY = vel*Math.sin(theta);
-        this.angle = theta;
+        this.vel = 0;
+        this.angle = angle;
     }
     
-    draw() {
+   draw() {
     //add image for putter here 
     }
 
+    loadHit() {
+
+    }
+
     hit(ball) {
-     ball.velX = this.velX;
-     ball.velY = this.velY;
+     ball.velX = this.vel*Math.cos(this.angle);
+     ball.velY = this.vel*Math.sin(this.angle);
     }
 
    }
@@ -109,16 +112,18 @@ const height = canvas.height = window.innerHeight;
 
  class Game{
    constructor(){
-    this.ball = new Golfball(width/3, height/3, 0, 0, 'white', false);
+    this.ball = new Golfball(7*width/16, 7*height/16, 0, 0, 'white', false);
     this.putter = new Putter(width/3-1, height/3, 0, 0);
-    this.hole = new Hole();
+    this.hole = new Hole(width/2, height/2);
     }
+   
+
 
    
  }
 
 const game1 = new Game();
-const ball = game1.ball;
+const ball1 = game1.ball;
 const hole1 = game1.hole;
  //animate the canvas and start the game
  let lastTime;
@@ -136,11 +141,10 @@ function loop() {
   //center it 
   ctx.fillRect(width/4, height/4, width/2 , height/3);
   hole1.draw();
-  ball.draw();
-  ball.update(0.99, delta);
+  ball1.draw();
+  ball1.update(0.99, delta);
   lastTime = currentTime;
   requestAnimationFrame(loop);
 }
-
 
 loop();
