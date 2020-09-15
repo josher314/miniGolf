@@ -125,7 +125,7 @@ const hole1 = game1.hole;
 function loop() {
  //get time between animation frames to accurately render objects on screen 
   let currentTime = Date.now();
-  let dt = (currentTime- lastTime)/1000;
+  let delta = (currentTime- lastTime)/1000;
   ctx.beginPath();
   ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
   ctx.fillRect(0, 0, width, height);
@@ -137,7 +137,7 @@ function loop() {
   ctx.fillRect(width/4, height/4, width/2 , height/3);
   hole1.draw();
   ball.draw();
-  ball.update(0.99);
+  ball.update(0.99, delta);
   lastTime = currentTime;
   requestAnimationFrame(loop);
 }
