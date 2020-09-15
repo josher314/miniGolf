@@ -21,6 +21,7 @@ const height = canvas.height = window.innerHeight;
     }
 
     loadHit() {
+     
 
     }
 
@@ -118,7 +119,6 @@ const height = canvas.height = window.innerHeight;
     }
    
 
-
    
  }
 
@@ -126,7 +126,7 @@ const game1 = new Game();
 const ball1 = game1.ball;
 const hole1 = game1.hole;
  //animate the canvas and start the game
- let lastTime;
+ let lastTime = Date.now();
 function loop() {
  //get time between animation frames to accurately render objects on screen 
   let currentTime = Date.now();
