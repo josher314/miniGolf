@@ -58,7 +58,7 @@ const height = canvas.height = window.innerHeight;
     }
 
    //update the ball's position, making sure it bounces off any walls and loses speed according to the "slow" rate which must be < 1 in magnitude
-   update(rate) {
+   update(rate, dt) {
    //check walls
    if ((this.x + this.size) >= 3*(width/4)) { 
      this.velX = -(this.velX);
@@ -68,11 +68,11 @@ const height = canvas.height = window.innerHeight;
      this.velX = -(this.velX);
    }
 
-   if ((this.y + this.size) >= height) {
+   if ((this.y + this.size) >= 7*height/12) {
      this.velY = -(this.velY);
    }
 
-   if ((this.y - this.size) <= 0) {
+   if ((this.y - this.size) <= height/4) {
      this.velY = -(this.velY);
    }
    if (this.velX !==0 || this.velY !== 0) {
@@ -85,8 +85,8 @@ const height = canvas.height = window.innerHeight;
         this.velY = 0;  
      }
 
-   this.x += this.velX;
-   this.y += this.velY;
+   this.x += this.velX*dt;
+   this.y += this.velY*dt;
   }
 
  }
@@ -121,8 +121,11 @@ const game1 = new Game();
 const ball = game1.ball;
 const hole1 = game1.hole;
  //animate the canvas and start the game
+ let lastTime;
 function loop() {
- //semi transparent background
+ //get time between animation frames to accurately render objects on screen 
+  let currentTime = Date.now();
+  let dt = (currentTime- lastTime)/1000;
   ctx.beginPath();
   ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
   ctx.fillRect(0, 0, width, height);
@@ -135,6 +138,7 @@ function loop() {
   hole1.draw();
   ball.draw();
   ball.update(0.99);
+  lastTime = currentTime;
   requestAnimationFrame(loop);
 }
 
