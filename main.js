@@ -1,32 +1,60 @@
 
-// setup canvas
 
+// setup canvas
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
 const width = canvas.width = window.innerWidth;
 const height = canvas.height = window.innerHeight;
 
+// Putter
+  class Putter {
+    constructor (x, y, vel, theta) {
+        this.x = x;
+        this.y = y;
+        this.velX= vel*Math.cos(theta);
+        this.velY = vel*Math.sin(theta);
+        this.angle = theta;
+    }
+    
+    draw() {
+    //add image for putter here 
+    }
+
+    hit(ball) {
+     ball.velX = this.velX;
+     ball.velY = this.velY;
+    }
+
+   }
+
 
  // Represent a Golf Ball object with position, x-velocity, y-velocity, color, size, and boolean (whether it exists)
    class Golfball {
-   constructor(x, y, velX, velY, color, isMoving, inHole){
+   constructor(x, y, velX, velY, color, inhole){
       this.x = x;
       this.y = y;
       this.velX = velX;
       this.velY = velY;
 	  this.color = color;
-      this.isMoving = isMoving;
-      this.inHole = inHole;
 	  this.size = 10;
+      this.inhole = false;
     }
 
    //draw a ball object on the context
    draw() {
-    ctx.beginPath();
-	ctx.fillStyle = this.color;
-	ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
-	ctx.fill();
+    if (!this.inhole){
+        ctx.beginPath();
+	    ctx.fillStyle = this.color;
+	    ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+	    ctx.fill();
+     }
+    }
+
+    //Checks whether the ball has "collided" with the hole
+    inHole(hole){
+
+        
     }
 
    //update the ball's position, making sure it bounces off any walls and loses speed according to the "slow" rate which must be < 1 in magnitude
@@ -55,7 +83,6 @@ const height = canvas.height = window.innerHeight;
    if (Math.abs(this.velX) < .15 && Math.abs(this.velY) <.15) {
         this.velX = 0;
         this.velY = 0;  
-        this.isMoving = false;
      }
 
    this.x += this.velX;
@@ -80,22 +107,20 @@ const height = canvas.height = window.innerHeight;
 
  }
 
-  //initialize a game ball to be used 
-  let ball = new Golfball(
-    // ball position always drawn centered on the left end of the putting green 
-    width/3, 
-    height/3,
-    9,
-    1,
-    'white',
-    true,
-    true
-  );
+ class Game{
+   constructor(){
+    this.ball = new Golfball(width/3, height/3, 0, 0, 'white', false);
+    this.putter = new Putter(width/3-1, height/3, 0, 0);
+    this.hole = new Hole();
+    }
 
-  let hole1 = new Hole( width/2, 2*height/5);
+   
+ }
 
-
-//animate the canvas and start the game
+const game1 = new Game();
+const ball = game1.ball;
+const hole1 = game1.hole;
+ //animate the canvas and start the game
 function loop() {
  //semi transparent background
   ctx.beginPath();
@@ -112,5 +137,6 @@ function loop() {
   ball.update(0.99);
   requestAnimationFrame(loop);
 }
+
 
 loop();
