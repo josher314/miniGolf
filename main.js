@@ -12,7 +12,7 @@ const height = canvas.height = window.innerHeight;
     constructor (x, y, vel, angle) {
         this.x = x;
         this.y = y;
-        this.vel = 0;
+        this.vel = 0; 
         this.angle = angle;
     }
     
@@ -20,6 +20,7 @@ const height = canvas.height = window.innerHeight;
     //add image for putter here 
     }
 
+    
     loadHit() {
      
 
@@ -57,7 +58,12 @@ const height = canvas.height = window.innerHeight;
 
     //Checks whether the ball has "collided" with the hole
     inHole(hole){
-
+     let dx = (hole.xpos - this.x);
+     let dy = (hole.ypos - this.y);
+     let dist = Math.sqrt(dx**2 + dy**2);
+     if (dist < 2) {
+          inhole = true;
+     }
         
     }
 
