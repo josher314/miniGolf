@@ -61,8 +61,8 @@ const height = canvas.height = window.innerHeight;
      let dx = (hole.xpos - this.x);
      let dy = (hole.ypos - this.y);
      let dist = Math.sqrt(dx**2 + dy**2);
-     if (dist < 2) {
-          inhole = true;
+     if (dist <= this.size*2) {
+            this.inhole = true;
      }
         
     }
@@ -70,6 +70,7 @@ const height = canvas.height = window.innerHeight;
    //update the ball's position, making sure it bounces off any walls and loses speed according to the "slow" rate which must be < 1 in magnitude
    update(rate, dt) {
    //check walls
+
    if ((this.x + this.size) >= 3*(width/4)) { 
      this.velX = -(this.velX);
     }
@@ -89,7 +90,7 @@ const height = canvas.height = window.innerHeight;
                   this.velX *= rate;
                   this.velY *= rate;
     }
-    //lose speed 
+    //when speed is small enough, stop ball
    if (Math.abs(this.velX) < .15 && Math.abs(this.velY) <.15) {
         this.velX = 0;
         this.velY = 0;  
@@ -119,7 +120,7 @@ const height = canvas.height = window.innerHeight;
 
  class Game{
    constructor(){
-    this.ball = new Golfball(7*width/16, 7*height/16, 0, 0, 'white', false);
+    this.ball = new Golfball(7*width/16, 7*height/16, 2, 3, 'white', false);
     this.putter = new Putter(width/3-1, height/3, 0, 0);
     this.hole = new Hole(width/2, height/2);
     }
@@ -149,6 +150,7 @@ function loop() {
   hole1.draw();
   ball1.draw();
   ball1.update(0.99, delta);
+  ball1.inHole(hole1);
   lastTime = currentTime;
   requestAnimationFrame(loop);
 }
