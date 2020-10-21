@@ -12,18 +12,28 @@ const height = canvas.height = window.innerHeight;
     constructor (x, y, vel, angle) {
         this.x = x;
         this.y = y;
-        this.vel = 0; 
+        this.vel = vel; 
         this.angle = angle;
     }
     
-   draw() {
-    //add image for putter here 
+   drawlineTraject(e) {
+    ctx.beginPath();
+    ctx.moveTo(this.x,this.y);
+    ctx.lineTo(e.clientX, e.clientY);
+    ctx.stroke();
+    } 
+
+    getAngle(e){
+     let x1 = e.clientX;
+     let y1 = e.clientY;
+     let dy = this.y-y1 ;
+     let dx = this.x = x1;
+     this.angle = (Math.atan2(dy, dx) * 180) / Math.PI
     }
 
     
     loadHit() {
      
-
     }
 
     hit(ball) {
@@ -33,10 +43,9 @@ const height = canvas.height = window.innerHeight;
 
    }
 
-
  // Represent a Golf Ball object with position, x-velocity, y-velocity, color, size, and boolean (whether it exists)
    class Golfball {
-   constructor(x, y, velX, velY, color, inhole){
+   constructor(x, y, velX, velY, color, inhole, isMoving){
       this.x = x;
       this.y = y;
       this.velX = velX;
@@ -44,6 +53,7 @@ const height = canvas.height = window.innerHeight;
 	  this.color = color;
 	  this.size = 10;
       this.inhole = false;
+      this.isMoving= false;
     }
 
    //draw a ball object on the context
@@ -93,7 +103,8 @@ const height = canvas.height = window.innerHeight;
     //when speed is small enough, stop ball
    if (Math.abs(this.velX) < .15 && Math.abs(this.velY) <.15) {
         this.velX = 0;
-        this.velY = 0;  
+        this.velY = 0; 
+        this.isMoving = false;
      }
 
    this.x += this.velX*dt;
